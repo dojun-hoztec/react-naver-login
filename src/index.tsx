@@ -1,6 +1,6 @@
 import * as React from 'react';
 
-const NAVER_ID_SDK_URL = 'https://static.nid.naver.com/js/naveridlogin_js_sdk_2.0.0.js';
+const NAVER_ID_SDK_URL = 'https://static.nid.naver.com/js/naveridlogin_js_sdk_2.0.2-nopolyfill.js';
 export interface NaverUser {
   email: string
   name: string
