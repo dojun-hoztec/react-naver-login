@@ -3,7 +3,7 @@ export interface NaverUser {
     email: string;
     name: string;
     id: string;
-    profile_image: "https://phinf.pstatic.net/contact/20190225_94/1551076747070IDoQC_PNG/image.png";
+    profile_image: string;
     age?: string;
     birthday?: string;
     gender?: string;
@@ -16,9 +16,7 @@ interface IProps {
     onSuccess: (result: NaverUser) => void;
     onFailure: () => void;
 }
-interface IState {
-}
-declare class LoginNaver extends React.Component<IProps, IState> {
+declare class LoginNaver extends React.Component<IProps> {
     componentDidMount(): void;
     render(): React.ComponentElement<any, any> | Element | JSX.Element;
 }

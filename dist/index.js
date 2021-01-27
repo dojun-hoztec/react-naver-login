@@ -33,18 +33,7 @@ function __extends(d, b) {
     d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
 }
 
-var __assign = function() {
-    __assign = Object.assign || function __assign(t) {
-        for (var s, i = 1, n = arguments.length; i < n; i++) {
-            s = arguments[i];
-            for (var p in s) if (Object.prototype.hasOwnProperty.call(s, p)) t[p] = s[p];
-        }
-        return t;
-    };
-    return __assign.apply(this, arguments);
-};
-
-var NAVER_ID_SDK_URL = 'https://static.nid.naver.com/js/naveridlogin_js_sdk_2.0.0.js';
+var NAVER_ID_SDK_URL = 'https://static.nid.naver.com/js/naveridlogin_js_sdk_2.0.2-nopolyfill.js';
 /**
  * 이 함수는 브라우저 환경에서만 호출이 되야 한다. window 객체에 직접 접근한다.
  * @param props
@@ -54,7 +43,6 @@ var initLoginButton = function (props) {
         return;
     }
     var clientId = props.clientId, callbackUrl = props.callbackUrl, onSuccess = props.onSuccess, onFailure = props.onFailure;
-    var location = __assign({}, window).location;
     var naver = window['naver'];
     var naverLogin = new naver.LoginWithNaverId({
         callbackUrl: callbackUrl,
@@ -65,23 +53,17 @@ var initLoginButton = function (props) {
     naverLogin.init();
     if (!window.opener) {
         naver.successCallback = function (data) { return onSuccess(data); };
-        naver.FailureCallback = onFailure;
+        naver.failureCallback = onFailure;
     }
     else {
-        // let tryCount = 0;
-        // const initLoop = setInterval(() => {
-        //   if(tryCount > 30) {
-        //     clearInterval(initLoop);
-        //   }
-        //   tryCount++;
-        // }, 100);
         naverLogin.getLoginStatus(function (status) {
-            if (!status || location.hash.indexOf('#access_token') === -1) {
-                return;
+            if (status) {
+                window.opener.naver.successCallback(naverLogin.user);
             }
-            window.opener.naver.successCallback(naverLogin.user);
+            else {
+                window.opener.failureCallback();
+            }
             window.close();
-            // clearInterval(initLoop);
         });
     }
 };
@@ -112,7 +94,6 @@ var LoginNaver = /** @class */ (function (_super) {
         if (!('browser' in process)) {
             return;
         }
-        // 네이버 로그인 버튼을 먼저 붙인 후 스크립트 로드하고 초기화를 해야 한다.
         appendNaverButton();
         loadScript(this.props);
     };
