@@ -36,7 +36,7 @@ const initLoginButton = (props: IProps) => {
     {
       callbackUrl,
       clientId,
-      isPopup: true,
+      isPopup: false,
       loginButton: {color: "green", type: 3, height: 60},
     }
   );
