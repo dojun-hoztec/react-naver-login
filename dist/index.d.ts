@@ -12,6 +12,7 @@ export interface NaverUser {
 interface IProps {
     clientId: string;
     callbackUrl: string;
+    callbackHandle: boolean;
     render: (props: any) => React.ComponentElement<any, any> | Element | JSX.Element;
     onSuccess: (result: NaverUser) => void;
     onFailure: () => void;

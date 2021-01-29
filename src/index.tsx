@@ -15,6 +15,7 @@ export interface NaverUser {
 interface IProps {
   clientId: string;
   callbackUrl: string;
+  callbackHandle: boolean;
   render: (props: any) => React.ComponentElement<any, any> | Element | JSX.Element;
   onSuccess: (result: NaverUser) => void;
   onFailure: () => void;
@@ -26,18 +27,19 @@ interface IProps {
  * @param props 
  */
 const initLoginButton = (props: IProps) => {
-  if(!('browser' in process)) {
+  if (!('browser' in process)) {
     return;
   }
-  const { clientId, callbackUrl, onSuccess, onFailure } = props;
+  const { clientId, callbackUrl, callbackHandle, onSuccess, onFailure } = props;
   const naver = window['naver'];
 
   const naverLogin = new naver.LoginWithNaverId(
     {
       callbackUrl,
       clientId,
+      callbackHandle,
       isPopup: false,
-      loginButton: {color: "green", type: 3, height: 60},
+      loginButton: { color: "green", type: 3, height: 60 },
     }
   );
 
@@ -62,7 +64,7 @@ const appendNaverButton = () => {
   if (document && document.querySelectorAll('#naverIdLogin').length === 0) {
     const naverId = document.createElement('div');
     naverId.id = 'naverIdLogin';
-    naverId.style.position =  'absolute';
+    naverId.style.position = 'absolute';
     naverId.style.top = '-10000px';
     document.body.appendChild(naverId);
   }
@@ -78,20 +80,20 @@ const loadScript = (props: IProps) => {
 }
 
 class LoginNaver extends React.Component<IProps> {
-   componentDidMount() {
-    if(!('browser' in process)) {
+  componentDidMount() {
+    if (!('browser' in process)) {
       return;
     }
     appendNaverButton();
     loadScript(this.props);
   }
-    
+
 
   public render() {
     const { render } = this.props;
     return (
-      render({ 
-        onClick: () => { 
+      render({
+        onClick: () => {
           if (!document || !(document as any).querySelector('#naverIdLogin').firstChild) return;
           const naverLoginButton: any = (document as any).querySelector('#naverIdLogin').firstChild;
           naverLoginButton.click();

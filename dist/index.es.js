@@ -38,11 +38,12 @@ var initLoginButton = function (props) {
     if (!('browser' in process)) {
         return;
     }
-    var clientId = props.clientId, callbackUrl = props.callbackUrl, onSuccess = props.onSuccess, onFailure = props.onFailure;
+    var clientId = props.clientId, callbackUrl = props.callbackUrl, callbackHandle = props.callbackHandle, onSuccess = props.onSuccess, onFailure = props.onFailure;
     var naver = window['naver'];
     var naverLogin = new naver.LoginWithNaverId({
         callbackUrl: callbackUrl,
         clientId: clientId,
+        callbackHandle: callbackHandle,
         isPopup: false,
         loginButton: { color: "green", type: 3, height: 60 },
     });
